@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/TakutoYoshikai/oreki-node/issues"
   },
-  "homepage": "https://github.com/TakutoYoshikai/oreki-node#readme"
+  "homepage": "https://github.com/TakutoYoshikai/oreki-node#readme",
+  "devDependencies": {
+    "ava": "^3.5.2"
+  }
 }
