@@ -1,0 +1,25 @@
+{
+  "name": "oreki-node",
+  "version": "1.0.0",
+  "description": "This is a package for using oreki framework.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TakutoYoshikai/oreki-node.git"
+  },
+  "keywords": [
+    "blockchain",
+    "lightningnetwork",
+    "bitcoin",
+    "btcd"
+  ],
+  "author": "Takuto Yoshikai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TakutoYoshikai/oreki-node/issues"
+  },
+  "homepage": "https://github.com/TakutoYoshikai/oreki-node#readme"
+}
