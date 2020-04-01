@@ -4,7 +4,8 @@
   "description": "This is a package for using oreki framework.",
   "main": "index.js",
   "scripts": {
-    "test": "ava -v"
+    "test": "ava -v",
+    "rpc-download": "curl -o rpc.proto -s https://raw.githubusercontent.com/lightningnetwork/lnd/master/lnrpc/rpc.proto"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   "homepage": "https://github.com/TakutoYoshikai/oreki-node#readme",
   "devDependencies": {
     "ava": "^3.5.2"
+  },
+  "dependencies": {
+    "grpc": "^1.24.2"
   }
 }
