@@ -1,4 +1,5 @@
 {
+  "private": "true",
   "name": "oreki-node",
   "version": "1.0.0",
   "description": "This is a package for using oreki framework.",
