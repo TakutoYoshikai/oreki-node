@@ -12,6 +12,7 @@ var lightning = new lnrpc.Lightning('localhost:10009', credentials);
 */
 
 const fs = require("fs");
+const EventEmitter = require("events");
 
 exports.hello = function() {
   console.log("hello world!");
@@ -38,10 +39,14 @@ exports.Oreki = class {
     return true;
   }
   constructor(configPath) {
+    this.emitter = new EventEmitter();
     const config = this.loadConfig(configPath);
     if (!this.validateConfig(config)) {
       return;
     }
     this.config = config;
+  }
+  on(eventName, callback) {
+    this.emitter.on(eventName, callback);
   }
 }

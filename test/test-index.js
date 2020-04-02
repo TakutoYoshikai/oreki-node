@@ -22,3 +22,11 @@ test("failing Oreki creation", t => {
   }
   t.fail();
 });
+
+test("event emitter", t => {
+  const oreki = new Oreki("./test/config-test-correct.json");
+  oreki.on("start", function() {
+    t.pass();
+  });
+  oreki.emitter.emit("start");
+});
