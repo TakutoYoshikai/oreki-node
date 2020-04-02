@@ -11,6 +11,42 @@ var lnrpc = lnrpcDescriptor.lnrpc;
 var lightning = new lnrpc.Lightning('localhost:10009', credentials);
 */
 
+const fs = require("fs");
+
 exports.hello = function() {
   console.log("hello world!");
+}
+
+exports.Oreki = class {
+  loadConfig(configPath) {
+    const jsonText = fs.readFileSync(configPath, {
+      encoding: "utf-8"
+    });
+    const json = JSON.parse(jsonText);
+    return json;
+  }
+  validateConfig(config) {
+    const databases = [
+      "sequelize"
+    ];
+    try {
+      if (config.database === null || config.database === undefined) {
+        throw new Error("database is not set in config.");
+      }
+      if (!databases.includes(config.database)) {
+        throw new Error("database in config is not supported.");    
+      }
+    } catch (e) {
+      console.error("error: ", e.message);
+      return false;
+    }
+    return true;
+  }
+  constructor(configPath) {
+    const config = this.loadConfig(configPath);
+    if (!this.validateConfig(config)) {
+      return;
+    }
+    this.config = config;
+  }
 }
