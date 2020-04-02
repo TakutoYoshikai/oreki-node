@@ -29,16 +29,11 @@ exports.Oreki = class {
     const databases = [
       "sequelize"
     ];
-    try {
-      if (config.database === null || config.database === undefined) {
-        throw new Error("database is not set in config.");
-      }
-      if (!databases.includes(config.database)) {
-        throw new Error("database in config is not supported.");    
-      }
-    } catch (e) {
-      console.error("error: ", e.message);
-      return false;
+    if (config.database === null || config.database === undefined) {
+      throw new Error("database is not set in config.");
+    }
+    if (!databases.includes(config.database)) {
+      throw new Error("database in config is not supported.");    
     }
     return true;
   }

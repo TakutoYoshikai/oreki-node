@@ -14,10 +14,11 @@ test("create Oreki object", t => {
 });
 
 test("failing Oreki creation", t => {
-  const oreki = new Oreki("./test/config-test-wrong.json");
-  if (oreki.config !== undefined) {
-    t.fail();
+  try {
+    const oreki = new Oreki("./test/config-test-wrong.json");
+  } catch (e) {
+    t.pass();
     return;
   }
-  t.pass();
+  t.fail();
 });
