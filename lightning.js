@@ -54,7 +54,7 @@ module.exports = function(config) {
       return new Promise(function(resolve, reject) {
         const request = {}
         ln.walletBalance(request, function(err, response) {
-          if (err === null && response) {
+          if (err === null && response.total_balance !== undefined) {
             resolve(response)
             return
           }
