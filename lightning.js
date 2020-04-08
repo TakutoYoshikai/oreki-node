@@ -50,6 +50,22 @@ module.exports = function(config) {
         })
       })
     },
+    getTransactions:function() {
+      return new Promise(function(resolve, reject) {
+        const request = {}
+        ln.getTransactions(request, function(err, response) {
+          if (err !== null) {
+            reject(err)
+            return
+          }
+          if (!response.transactions) {
+            reject()
+            return
+          }
+          resolve(response.transactions)
+        });
+      })
+    },
     getBalance: function() {
       return new Promise(function(resolve, reject) {
         const request = {}
@@ -60,6 +76,24 @@ module.exports = function(config) {
           }
           reject()
         });
+      })
+    },
+    createAddress: function() {
+      return new Promise(function(resolve, reject) {
+        const request = {
+          type: "np2wkh"
+        }
+        ln.newAddress(request, function(err, response) {
+          if (err !== null) {
+            reject(err)
+            return
+          }
+          if (!response || response.address === undefined) {
+            reject()
+            return
+          }
+          resolve(response.address)
+        })
       })
     }
   }
