@@ -8,15 +8,22 @@ function sleep(waitSec) {
     setTimeout(function() { resolve() }, waitSec);
   });
 }
-test("unlock and get balance", async function (t){
+
+(function unlock() {
+  return new Promise(async function(resolve, reject) {
+    try {
+      await lightning.unlock()
+    } catch(err) {
+      console.error(err);
+    }
+    await sleep(3000)
+    resolve()
+  })
+})()
+
+
+test("get balance", async function (t){
   let success = true;
-  try {
-    await lightning.unlock()
-  } catch(err) {
-    console.error(err);
-    success = false
-  }
-  await sleep(3000)
   try {
     const response = await lightning.getBalance()
   } catch(err) {
