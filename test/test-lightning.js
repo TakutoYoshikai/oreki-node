@@ -36,3 +36,19 @@ test("get balance", async function (t){
   }
   t.fail()
 })
+
+test("get transaction", async function(t) {
+  let transactions
+  try {
+    transactions = await lightning.getTransactions()
+  } catch(err) {
+    t.fail()
+    return
+  }
+  console.log(transactions)
+  if (transactions.length >= 0) {
+    t.pass()
+    return
+  }
+  t.fail()
+})
