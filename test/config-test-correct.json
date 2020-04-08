@@ -1,3 +1,9 @@
 {
-  "database": "sequelize"
+  "database": "sequelize",
+  "lnd": {
+    "host": "localhost:10001",
+    "lndCert": "/home/ec2-user/.lnd/tls.cert",
+    "macaroon": "/mnt/storage/alice/data/chain/bitcoin/testnet/admin.macaroon",
+    "password": "HelloWorld"
+  }
 }

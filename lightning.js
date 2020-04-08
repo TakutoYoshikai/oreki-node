@@ -14,7 +14,11 @@ var protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 // The protoDescriptor object has the full package hierarchy
 var lnrpc = protoDescriptor.lnrpc;
 
-module.exports = function(host, lndCertPath, macaroonPath) {
+module.exports = function(config) {
+  const host = config.host
+  const lndCertPath = config.lndCert
+  const macaroonPath = config.macaroon 
+  const password = config.password
   var macaroonCreds = grpc.credentials.createFromMetadataGenerator(function(
         args,
         callback
@@ -34,19 +38,23 @@ module.exports = function(host, lndCertPath, macaroonPath) {
   return {
     unlock: function() {
       return new Promise(function(resolve, reject) {
+        const request = {
+          wallet_password: Buffer.from(password)
+        }
         walletUnlocker.unlockWallet(request, function(err, response) {
           if (err === null) {
             resolve()
             return
           }
-          reject()
+          reject(err)
         })
       })
     },
     getBalance: function() {
       return new Promise(function(resolve, reject) {
+        const request = {}
         ln.walletBalance(request, function(err, response) {
-          if (err === null && !response) {
+          if (err === null && response) {
             resolve(response)
             return
           }
