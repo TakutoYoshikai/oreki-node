@@ -27,15 +27,6 @@ exports.Oreki = class {
     return json;
   }
   validateConfig(config) {
-    const databases = [
-      "sequelize"
-    ];
-    if (config.database === null || config.database === undefined) {
-      throw new Error("database is not set in config.");
-    }
-    if (!databases.includes(config.database)) {
-      throw new Error("database in config is not supported.");    
-    }
     return true;
   }
   constructor(configPath) {
