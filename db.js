@@ -43,7 +43,11 @@ module.exports = function(config) {
           .sync({force: test})
     },
     getPayments: function() { 
-      return Payment.findAll()
+      return Payment.findAll({
+        where: {
+          paid: false
+        }
+      })
     },
     getPaymentByAddress: function(address) {
       return Payment.findOne({

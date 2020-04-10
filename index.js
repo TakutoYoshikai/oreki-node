@@ -58,6 +58,29 @@ exports.Oreki = class {
       console.error(err)
       return
     }
+    let payments = null
+    try {
+      payments = await this.db.getPayments()
+    } catch(err) {
+      console.error(err)
+      return
+    }
+    //TODO filtering checked transaction
+    transactions.forEach(function(transaction) {
+      const payment = payments.find(function(payment) {
+        console.log("ADD1")
+        console.log(payment.address)
+        console.log("ADD2")
+        console.log(transaction.dest_addresses[1])
+        return payment.address === transaction.dest_addresses[1]
+      })
+      if (payment === undefined) {
+        return;
+      }
+      payment.paid = true
+      payment.save()
+      this.emitter.emit("paid", payment)
+    })
   }
   async addPayment(userId, endpoint, point, price) {
     let address = null

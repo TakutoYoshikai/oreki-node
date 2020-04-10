@@ -39,17 +39,21 @@ test("add payment", async function (t) {
 
 test("check transaction", async function(t) {
   const oreki = new Oreki("./test/config-test-correct.json")
-  let transactions = null
+  await oreki.addPayment("user", "endpoint", 5, 1)
+  oreki.on("paid", function(payment) {
+    console.log("paid")
+    if (payment === null) {
+      t.fail()
+      return
+    }
+    console.log("payment: ")
+    console.log(payment)
+    t.pass()
+  })
   try {
-    transactions = await oreki.checkTransaction()
+    await oreki.checkTransaction()
   } catch(err) {
     t.fail()
     return
   }
-  if (transactions === null) {
-    t.fail()
-    return
-  }
-  console.log(transactions)
-  t.pass()
 })
