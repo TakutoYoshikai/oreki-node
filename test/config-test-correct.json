@@ -1,4 +1,8 @@
 {
+  "db": {
+    "test": true,
+    "sqliteFile": "test.sqlite3"
+  },
   "lnd": {
     "host": "localhost:10001",
     "lndCert": "/home/ec2-user/.lnd/tls.cert",

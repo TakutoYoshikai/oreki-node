@@ -24,7 +24,7 @@ exports.Oreki = class {
       return;
     }
     this.config = config;
-    this.db = require("./db")()
+    this.db = require("./db")(config.db)
     this.lightning = require("./lightning")(config.lnd);
     (async() => {
       try {
@@ -44,7 +44,7 @@ exports.Oreki = class {
       address = await this.lightning.createAddress()
     } catch(err) {
       console.log(err)  
-      return
+      return null
     }
     let payment = null
     try {
