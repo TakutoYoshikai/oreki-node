@@ -1,5 +1,5 @@
 const test = require("ava");
-const Payment = require("../payments")({
+const Payment = require("../db")({
   sqliteFile: "test.sqlite3",
   test: true
 })
