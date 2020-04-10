@@ -23,7 +23,8 @@ exports.Oreki = class {
     if (!this.validateConfig(config)) {
       return;
     }
-    this.config = config;
+    this.config = config
+    this.timer = null
     this.db = require("./db")(config.db)
     this.lightning = require("./lightning")(config.lnd);
     (async() => {
@@ -37,6 +38,26 @@ exports.Oreki = class {
   }
   on(eventName, callback) {
     this.emitter.on(eventName, callback);
+  }
+  start() {
+    if (this.timer === null) {
+      this.timer = setInterval(this.checkTransaction, 60 * 1000)
+    }
+  }
+  stop() {
+    if (this.timer !== null) {
+      clearInterval(this.timer)
+    }
+  }
+
+  async checkTransaction() {
+    let transactions = null
+    try {
+      transactions = await this.lightning.getTransactions()
+    } catch(err) {
+      console.error(err)
+      return
+    }
   }
   async addPayment(userId, endpoint, point, price) {
     let address = null
