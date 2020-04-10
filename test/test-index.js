@@ -6,21 +6,7 @@ test("create Oreki object", t => {
     t.fail();
     return;
   }
-  if (oreki.config.database !== "sequelize") {
-    t.fail();
-    return;
-  }
   t.pass();
-});
-
-test("failing Oreki creation", t => {
-  try {
-    const oreki = new Oreki("./test/config-test-wrong.json");
-  } catch (e) {
-    t.pass();
-    return;
-  }
-  t.fail();
 });
 
 test("event emitter", t => {

@@ -1,5 +1,4 @@
 {
-  "database": "sequelize",
   "lnd": {
     "host": "localhost:10001",
     "lndCert": "/home/ec2-user/.lnd/tls.cert",
