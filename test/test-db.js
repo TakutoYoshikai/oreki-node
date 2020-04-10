@@ -1,14 +1,14 @@
 const test = require("ava");
-const Payment = require("../db")({
+const db = require("../db")({
   sqliteFile: "test.sqlite3",
   test: true
 })
 
 test("create payment and get payment", async function(t) {
-  await Payment.initDB()
+  await db.initDB()
   let payment = null
   try {
-    payment = await Payment.createPayment({
+    payment = await db.createPayment({
       address: "address",
       user_id: "user_id",
       endpoint: "endpoint",
@@ -24,7 +24,7 @@ test("create payment and get payment", async function(t) {
     return
   }
   try {
-    payment = await Payment.getPaymentByAddress("address")
+    payment = await db.getPaymentByAddress("address")
   } catch(err) {
     t.fail(err)
     return
@@ -36,7 +36,7 @@ test("create payment and get payment", async function(t) {
 
   let payments = null
   try {
-    payments = await Payment.getPayments()
+    payments = await db.getPayments()
   } catch(err) {
     t.fail(err)
     return
