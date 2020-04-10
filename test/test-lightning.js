@@ -4,15 +4,12 @@ const lndConfig = JSON.parse(fs.readFileSync("./test/config-test-correct.json", 
 const lightning = require("../lightning")(lndConfig)
 
 function unlock() {
-  return new Promise(async function(resolve, reject) {
-    try {
-      await lightning.unlock()
-    } catch(err) {
-      console.error(err);
-    }
-    setTimeout(function() {
+  return new Promise(function(resolve, reject) {
+    lightning.unlock().then(function() {
+      setTimeout(resolve, 3000)
+    }).catch(function() {
       resolve()
-    }, 3000)
+    })
   })
 }
 
@@ -65,5 +62,6 @@ function executeTest() {
   })
 }
 
-unlock()
-setTimeout(executeTest, 3000)
+unlock().then(function() {
+  executeTest()
+})

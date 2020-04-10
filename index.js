@@ -38,7 +38,27 @@ exports.Oreki = class {
   on(eventName, callback) {
     this.emitter.on(eventName, callback);
   }
-  addPayment() {
-    
+  async addPayment(userId, endpoint, point, price) {
+    let address = null
+    try {
+      address = await this.lightning.createAddress()
+    } catch(err) {
+      console.log(err)  
+      return
+    }
+    let payment = null
+    try {
+      payment = await this.db.createPayment({
+        address: address,
+        user_id: userId,
+        endpoint: endpoint,
+        point: point,
+        price: price
+      })
+    } catch(err) {
+      console.log(err)
+      return
+    }
+    return payment
   }
 }
