@@ -1,15 +1,3 @@
-/*
-var grpc = require('grpc');
-var fs = require("fs");
-
-process.env.GRPC_SSL_CIPHER_SUITES = 'HIGH+ECDSA'
-
-var lndCert = fs.readFileSync("~/.lnd/tls.cert");
-var credentials = grpc.credentials.createSsl(lndCert);
-var lnrpcDescriptor = grpc.load("rpc.proto");
-var lnrpc = lnrpcDescriptor.lnrpc;
-var lightning = new lnrpc.Lightning('localhost:10009', credentials);
-*/
 
 const fs = require("fs");
 const EventEmitter = require("events");
@@ -36,8 +24,21 @@ exports.Oreki = class {
       return;
     }
     this.config = config;
+    this.db = require("./db")()
+    this.lightning = require("./lightning")(config.lnd);
+    (async() => {
+      try {
+        await this.lightning.unlock()
+      } catch(err) {
+        console.error(err)
+        return
+      }
+    })()
   }
   on(eventName, callback) {
     this.emitter.on(eventName, callback);
+  }
+  addPayment() {
+    
   }
 }

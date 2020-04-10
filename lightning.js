@@ -43,7 +43,7 @@ module.exports = function(config) {
         }
         walletUnlocker.unlockWallet(request, function(err, response) {
           if (err === null) {
-            resolve()
+            setTimeout(resolve, 3000)
             return
           }
           reject(err)
