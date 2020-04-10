@@ -53,11 +53,12 @@ exports.Oreki = class {
         user_id: userId,
         endpoint: endpoint,
         point: point,
-        price: price
+        price: price,
+        paid: false,
       })
     } catch(err) {
       console.log(err)
-      return
+      return null
     }
     return payment
   }

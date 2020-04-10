@@ -18,7 +18,7 @@ test("event emitter", t => {
 });
 
 test("add payment", async function (t) {
-  const oreki = new Oreki("./test/config-test-correct.json");
+  const oreki = new Oreki("./test/config-test-correct.json")
   let payment = null
   try {
     payment = await oreki.addPayment("user", "endpoint", 1, 1.5)
@@ -30,7 +30,7 @@ test("add payment", async function (t) {
     t.fail()
     return
   }
-  if (payment.address === null || payment.user_id !== "user" || payment.endpoint !== "endpoint" || payment.point !== 1 || payment.price !== 1.5) {
+  if (payment.address === null || payment.user_id !== "user" || payment.endpoint !== "endpoint" || payment.point !== 1 || payment.price !== 1.5 || payment.paid !== false) {
     t.fail()
     return
   }

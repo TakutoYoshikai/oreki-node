@@ -13,13 +13,14 @@ test("create payment and get payment", async function(t) {
       user_id: "user_id",
       endpoint: "endpoint",
       point: 5,
-      price: 1.5
+      price: 1.5,
+      paid: false
     })
   } catch(err) {
     t.fail(err)
     return
   }
-  if (!(payment.address === "address" && payment.user_id === "user_id" && payment.endpoint === "endpoint" && payment.point === 5 && payment.price === 1.5)) {
+  if (!(payment.address === "address" && payment.user_id === "user_id" && payment.endpoint === "endpoint" && payment.point === 5 && payment.price === 1.5 && payment.paid === false)) {
     t.fail()
     return
   }
