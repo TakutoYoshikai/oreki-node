@@ -1,6 +1,6 @@
 {
   "db": {
-    "test": false,
+    "test": true,
     "sqliteFile": "test-bob.sqlite3"
   },
   "lnd": {

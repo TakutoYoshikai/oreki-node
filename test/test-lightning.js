@@ -37,7 +37,6 @@ function executeTest() {
       t.fail()
       return
     }
-    console.log(transactions)
     if (transactions.length >= 0) {
       t.pass()
       return

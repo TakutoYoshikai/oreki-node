@@ -1,5 +1,13 @@
 const test = require("ava");
 const Oreki = require("../index").Oreki;
+
+function sleep(ms) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve()
+    }, ms)
+  })
+}
 test.serial("create Oreki object", t => {
   const oreki = new Oreki("./test/config-test-correct.json");
   if (oreki.config === null || oreki.config === undefined) {
@@ -37,38 +45,14 @@ test.serial("add payment", async function (t) {
   t.pass()
 })
 
-test.serial("send coin", async function(t) {
-  const alice = new Oreki("./test/config-alice.json")
-  const bob = new Oreki("./test/config-bob.json")
-  let address = null
-  try {
-    address = await bob.lightning.createAddress()
-  } catch(err) {
-    console.error(err)
-    t.fail()
-    return
-  }
-  let response = null
-  try {
-    response = await alice.lightning.sendCoins(address, 1000)
-  } catch(err) {
-    console.error(err)
-    t.fail()
-    return
-  }
-  console.log("RESPONSE")
-  console.log(response)
-  t.pass()
-})
 
 test.serial("check transaction", async function(t) {
-/*
   const alice = new Oreki("./test/config-alice.json")
   const bob = new Oreki("./test/config-bob.json")
-  alice.
+  await bob.db.initDB()
 
-  await oreki.addPayment("user", "endpoint", 5, 1)
-  oreki.on("paid", function(payment) {
+  const payment = await bob.addPayment("user", "endpoint", 5, 1000)
+  bob.on("paid", function(payment) {
     console.log("paid")
     if (payment === null) {
       t.fail()
@@ -78,11 +62,21 @@ test.serial("check transaction", async function(t) {
     console.log(payment)
     t.pass()
   })
+
+  let response = null
   try {
-    await oreki.checkTransaction()
+    response = await alice.lightning.sendCoins(payment.address, 1000)
   } catch(err) {
+    console.error(err)
     t.fail()
     return
   }
-*/
+
+  await sleep(5 * 60 * 1000)
+  try {
+    await bob.checkTransaction()
+  } catch(err) {
+    console.error(err)
+    t.fail()
+  }
 })

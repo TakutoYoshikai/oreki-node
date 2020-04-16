@@ -27,7 +27,11 @@ exports.Oreki = class {
     this.timer = null
     this.db = require("./db")(config.db)
     this.lightning = require("./lightning")(config.lnd);
-    this.lightning.unlock()
+    this.lightning.unlock().then(function() {
+      console.log("unlocked")
+    }).catch(function(err) {
+      console.error(err)
+    })
   }
   on(eventName, callback) {
     this.emitter.on(eventName, callback);
@@ -44,6 +48,7 @@ exports.Oreki = class {
   }
 
   async checkTransaction() {
+    let that = this
     let transactions = null
     try {
       transactions = await this.lightning.getTransactions()
@@ -61,18 +66,14 @@ exports.Oreki = class {
     //TODO filtering checked transaction
     transactions.forEach(function(transaction) {
       const payment = payments.find(function(payment) {
-        console.log("ADD1")
-        console.log(payment.address)
-        console.log("ADD2")
-        console.log(transaction.dest_addresses[1])
-        return payment.address === transaction.dest_addresses[1]
+        return payment.address === transaction.dest_addresses[0]
       })
       if (payment === undefined) {
         return;
       }
       payment.paid = true
       payment.save()
-      this.emitter.emit("paid", payment)
+      that.emitter.emit("paid", payment)
     })
   }
   async addPayment(userId, endpoint, point, price) {
@@ -80,7 +81,7 @@ exports.Oreki = class {
     try {
       address = await this.lightning.createAddress()
     } catch(err) {
-      console.log(err)  
+      console.error(err)  
       return null
     }
     let payment = null
@@ -94,7 +95,7 @@ exports.Oreki = class {
         paid: false,
       })
     } catch(err) {
-      console.log(err)
+      console.error(err)
       return null
     }
     return payment

@@ -1,4 +1,6 @@
 node_modules
 rpc.proto
 test.sqlite3
+test-alice.sqlite3
+test-bob.sqlite3
 payment.sqlite3
