@@ -14,7 +14,7 @@ function unlock() {
 }
 
 function executeTest() {
-  test("get balance", async function (t){
+  test.serial("get balance", async function (t){
     let success = true;
     try {
       const response = await lightning.getBalance()
@@ -29,7 +29,7 @@ function executeTest() {
     t.fail()
   })
 
-  test("get transaction", async function(t) {
+  test.serial("get transaction", async function(t) {
     let transactions
     try {
       transactions = await lightning.getTransactions()
@@ -45,7 +45,7 @@ function executeTest() {
     t.fail()
   })
 
-  test("create new address", async function(t) {
+  test.serial("create new address", async function(t) {
     let address
     try {
       address = await lightning.createAddress()

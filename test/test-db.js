@@ -4,7 +4,7 @@ const db = require("../db")({
   test: true
 })
 
-test("create payment and get payment", async function(t) {
+test.serial("create payment and get payment", async function(t) {
   await db.initDB()
   let payment = null
   try {
