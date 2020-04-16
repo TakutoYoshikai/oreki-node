@@ -38,7 +38,10 @@ exports.Oreki = class {
   }
   start() {
     if (this.timer === null) {
-      this.timer = setInterval(this.checkTransaction, 60 * 1000)
+      const that = this
+      this.timer = setInterval(function() {
+        that.checkTransaction.apply(that)
+      }, 60 * 1000)
     }
   }
   stop() {
