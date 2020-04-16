@@ -36,6 +36,20 @@ exports.Oreki = class {
   on(eventName, callback) {
     this.emitter.on(eventName, callback);
   }
+  async init() {
+    try {
+      await this.lightning.unlock()
+    } catch(err) {
+      console.error(err)
+    }
+    try {
+      await this.db.initDB()
+    } catch(err) {
+      console.error(err)
+      return false
+    }
+    return true
+  }
   start() {
     if (this.timer === null) {
       const that = this
