@@ -1,0 +1,12 @@
+{
+  "db": {
+    "test": false,
+    "sqliteFile": "test-alice.sqlite3"
+  },
+  "lnd": {
+    "host": "localhost:10001",
+    "lndCert": "/home/ec2-user/.lnd/tls.cert",
+    "macaroon": "/mnt/storage/alice/data/chain/bitcoin/testnet/admin.macaroon",
+    "password": "HelloWorld"
+  }
+}

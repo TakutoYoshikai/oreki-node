@@ -27,14 +27,7 @@ exports.Oreki = class {
     this.timer = null
     this.db = require("./db")(config.db)
     this.lightning = require("./lightning")(config.lnd);
-    (async() => {
-      try {
-        await this.lightning.unlock()
-      } catch(err) {
-        console.error(err)
-        return
-      }
-    })()
+    this.lightning.unlock()
   }
   on(eventName, callback) {
     this.emitter.on(eventName, callback);

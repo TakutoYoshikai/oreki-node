@@ -37,8 +37,36 @@ test("add payment", async function (t) {
   t.pass()
 })
 
+test("send coin", async function(t) {
+  const alice = new Oreki("./test/config-alice.json")
+  const bob = new Oreki("./test/config-bob.json")
+  let address = null
+  try {
+    address = await bob.lightning.createAddress()
+  } catch(err) {
+    console.error(err)
+    t.fail()
+    return
+  }
+  let response = null
+  try {
+    response = await alice.lightning.sendCoins(address, 1000)
+  } catch(err) {
+    console.error(err)
+    t.fail()
+    return
+  }
+  console.log("RESPONSE")
+  console.log(response)
+  t.pass()
+})
+
 test("check transaction", async function(t) {
-  const oreki = new Oreki("./test/config-test-correct.json")
+/*
+  const alice = new Oreki("./test/config-alice.json")
+  const bob = new Oreki("./test/config-bob.json")
+  alice.
+
   await oreki.addPayment("user", "endpoint", 5, 1)
   oreki.on("paid", function(payment) {
     console.log("paid")
@@ -56,4 +84,5 @@ test("check transaction", async function(t) {
     t.fail()
     return
   }
+*/
 })

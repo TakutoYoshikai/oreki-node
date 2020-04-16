@@ -66,6 +66,22 @@ module.exports = function(config) {
         });
       })
     },
+    sendCoins: function(to, amount) {
+      return new Promise(function(resolve, reject) {
+        const request = {
+          addr: to,
+          amount: amount,
+          sat_per_byte: 1,
+        }
+        ln.sendCoins(request, function(err, response) {
+          if (err !== null) {
+            reject(err)
+            return
+          }
+          resolve(response)
+        })
+      })
+    },
     getBalance: function() {
       return new Promise(function(resolve, reject) {
         const request = {}

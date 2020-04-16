@@ -1,0 +1,12 @@
+{
+  "db": {
+    "test": false,
+    "sqliteFile": "test-bob.sqlite3"
+  },
+  "lnd": {
+    "host": "localhost:10002",
+    "lndCert": "/home/ec2-user/.lnd/tls.cert",
+    "macaroon": "/mnt/storage/bob/data/chain/bitcoin/testnet/admin.macaroon",
+    "password": "HelloWorld"
+  }
+}
