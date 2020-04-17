@@ -9,6 +9,9 @@
     "rpc-download": "curl -o rpc.proto -s https://raw.githubusercontent.com/lightningnetwork/lnd/master/lnrpc/rpc.proto",
     "preinstall": "curl -o rpc.proto -s https://raw.githubusercontent.com/lightningnetwork/lnd/master/lnrpc/rpc.proto"
   },
+  "bin": {
+    "oreki": "./bin/oreki"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TakutoYoshikai/oreki-node.git"
