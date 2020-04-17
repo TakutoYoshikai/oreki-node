@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TakutoYoshikai/oreki-node.git"
+    "url": "git+https://github.com/gaiax/oreki-node.git"
   },
   "keywords": [
     "blockchain",
@@ -25,9 +25,9 @@
   "author": "Takuto Yoshikai",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TakutoYoshikai/oreki-node/issues"
+    "url": "https://github.com/gaiax/oreki-node/issues"
   },
-  "homepage": "https://github.com/TakutoYoshikai/oreki-node#readme",
+  "homepage": "https://github.com/gaiax/oreki-node#readme",
   "devDependencies": {
     "ava": "^3.5.2"
   },
