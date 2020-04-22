@@ -13,7 +13,12 @@ module.exports = function(configPath) {
 
   let paymentBuffer = []
 
-  app.get("/", function(req, res, next) {
+  app.post("/", function(req, res, next) {
+    const password = req.body.password
+    if (password !== oreki.config.password) {
+      res.status(403).json({ msg: "forbidden" })
+      return
+    }
     res.json({ payments: paymentBuffer })
     paymentBuffer = []
   })
@@ -23,6 +28,11 @@ module.exports = function(configPath) {
     const endpointId = req.body.endpoint
     const point = req.body.point
     const price = req.body.price
+    const password = req.body.password
+    if (password !== oreki.config.password) {
+      res.status(403).json({ msg: "forbidden" })
+      return
+    }
     oreki.addPayment(userId, endpointId, point, price).then(function(payment) {
       res.json(payment)
     }).catch(function(err) {
