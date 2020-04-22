@@ -49,7 +49,7 @@ test.serial("add payment", async function (t) {
 test.serial("check transaction", async function(t) {
   const alice = new Oreki("./test/config-alice.json")
   const bob = new Oreki("./test/config-bob.json")
-  await bob.db.initDB()
+  await bob.init()
 
   const payment = await bob.addPayment("user", "endpoint", 5, 1000)
   bob.on("paid", function(payment) {

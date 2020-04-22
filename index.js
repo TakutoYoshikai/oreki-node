@@ -78,7 +78,7 @@ exports.Oreki = class {
     //TODO filtering checked transaction
     transactions.forEach(function(transaction) {
       const payment = payments.find(function(payment) {
-        return payment.address === transaction.dest_addresses[0] || payment.address === transaction.dest_addresses[1]
+        return (payment.address === transaction.dest_addresses[0] || payment.address === transaction.dest_addresses[1]) && payment.price <= parseInt(transaction.amount)
       })
       if (payment === undefined) {
         return;
