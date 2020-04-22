@@ -57,7 +57,5 @@ module.exports = function(configPath) {
       paymentBuffer.push(payment)
     })
     oreki.start()
-    let payment = await oreki.addPayment("user", "endpoint", 5, 1000)
-    console.log(payment.address)
   })()
 }
