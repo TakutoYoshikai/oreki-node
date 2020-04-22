@@ -43,6 +43,7 @@ test.serial("add payment", async function(t) {
   }
   t.pass()
 })
+
 test.serial("add payment by wrong password", async function(t) {
   await sleep(3000)
   const options = {
@@ -98,6 +99,7 @@ test.serial("get buffer payment", async function(t) {
   }
   t.pass()
 })
+
 test.serial("get buffer payment", async function(t) {
   await sleep(3000)
   const options = {
