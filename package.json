@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/gaiax/oreki-node#readme",
   "devDependencies": {
-    "ava": "^3.5.2"
+    "ava": "^3.5.2",
+    "request-promise": "^4.2.5"
   },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.4",

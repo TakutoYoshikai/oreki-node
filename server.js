@@ -1,31 +1,51 @@
 const express = require("express")
 const app = express()
 const Oreki = require("./index").Oreki
-const oreki = new Oreki("config.json")
+const bodyParser = require("body-parser")
+module.exports = function(configPath) {
+  const oreki = new Oreki(configPath)
 
-let paymentBuffer = []
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }))
 
-app.get("/", function(req, res, next) {
-  res.json({ payments: paymentBuffer })
-  paymentBuffer = []
-})
+  app.use(bodyParser.json())
 
-app.listen(3000, function() {
-  console.log("oreki started")
-});
+  let paymentBuffer = []
 
-(async() => {
-  const initialized = await oreki.init()
-  if (!initialized) {
-    console.error("couldn't initialized")
-    return
-  }
-  oreki.on("paid", function(payment) {
-    console.log("PAID")
-    console.log(payment)
-    paymentBuffer.push(payment)
+  app.get("/", function(req, res, next) {
+    res.json({ payments: paymentBuffer })
+    paymentBuffer = []
   })
-  oreki.start()
-  let payment = await oreki.addPayment("user", "endpoint", 5, 1000)
-  console.log(payment.address)
-})()
+
+  app.post("/payment", function(req, res, next) {
+    const userId = req.body.user_id
+    const endpointId = req.body.endpoint
+    const point = req.body.point
+    const price = req.body.price
+    oreki.addPayment(userId, endpointId, point, price).then(function(payment) {
+      res.json(payment)
+    }).catch(function(err) {
+      res.status(500).json(err)
+    })
+  })
+  app.listen(3000, function() {
+    console.log("oreki started")
+  });
+
+  (async() => {
+    const initialized = await oreki.init()
+    if (!initialized) {
+      console.error("couldn't initialized")
+      return
+    }
+    oreki.on("paid", function(payment) {
+      console.log("PAID")
+      console.log(payment)
+      paymentBuffer.push(payment)
+    })
+    oreki.start()
+    let payment = await oreki.addPayment("user", "endpoint", 5, 1000)
+    console.log(payment.address)
+  })()
+}
