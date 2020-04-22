@@ -37,7 +37,8 @@ test.serial("add payment", async function(t) {
     t.fail(err)
     return
   }
-  if (body.user_id !== "user" || body.endpoint !== "/endpoint" || body.point !== 10 || body.price !== 100) {
+  const payment = body.payment
+  if (payment.user_id !== "user" || payment.endpoint !== "/endpoint" || payment.point !== 10 || payment.price !== 100) {
     t.fail()
     return
   }
@@ -100,7 +101,7 @@ test.serial("get buffer payment", async function(t) {
   t.pass()
 })
 
-test.serial("get buffer payment", async function(t) {
+test.serial("get buffer payment by wrong password", async function(t) {
   await sleep(3000)
   const options = {
     url: "http://localhost:3000/",

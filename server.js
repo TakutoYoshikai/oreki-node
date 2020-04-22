@@ -34,7 +34,9 @@ module.exports = function(configPath) {
       return
     }
     oreki.addPayment(userId, endpointId, point, price).then(function(payment) {
-      res.json(payment)
+      res.json({
+        payment: payment
+      })
     }).catch(function(err) {
       res.status(500).json(err)
     })
