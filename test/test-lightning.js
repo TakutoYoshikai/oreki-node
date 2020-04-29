@@ -37,7 +37,7 @@ function executeTest() {
       t.fail()
       return
     }
-    if (transactions.length >= 0) {
+    if (Array.isArray(transactions)) {
       t.pass()
       return
     }
