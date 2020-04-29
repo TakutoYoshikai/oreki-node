@@ -53,7 +53,8 @@ function executeTest() {
       t.fail()
       return
     }
-    if ((typeof address === "string" || address instanceof String) && address.length > 0) {
+    if ((typeof address === "string" || address instanceof String) 
+      && address.length > 0) {
       t.pass()
       return
     }

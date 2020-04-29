@@ -20,7 +20,12 @@ test.serial("create payment and get payment", async function(t) {
     t.fail(err)
     return
   }
-  if (!(payment.address === "address" && payment.user_id === "user_id" && payment.endpoint === "endpoint" && payment.point === 5 && payment.price === 1.5 && payment.paid === false)) {
+  if (!(payment.address === "address" 
+    && payment.user_id === "user_id" 
+    && payment.endpoint === "endpoint" 
+    && payment.point === 5 
+    && payment.price === 1.5 
+    && payment.paid === false)) {
     t.fail()
     return
   }

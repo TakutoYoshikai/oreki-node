@@ -10,7 +10,8 @@ function sleep(ms) {
 }
 test.serial("create Oreki object", t => {
   const oreki = new Oreki("./test/config-test-correct.json");
-  if (oreki.config === null || oreki.config === undefined) {
+  if (oreki.config === null 
+    || oreki.config === undefined) {
     t.fail();
     return;
   }
@@ -34,11 +35,18 @@ test.serial("add payment", async function (t) {
     t.fail()
     return
   }
-  if (payment === null) {
+  if (payment === null 
+    || payment === undefined) {
     t.fail()
     return
   }
-  if (payment.address === null || payment.user_id !== "user" || payment.endpoint !== "endpoint" || payment.point !== 1 || payment.price !== 1.5 || payment.paid !== false) {
+  if (payment.address === null 
+    || payment.address === undefined
+    || payment.user_id !== "user" 
+    || payment.endpoint !== "endpoint" 
+    || payment.point !== 1 
+    || payment.price !== 1.5 
+    || payment.paid !== false) {
     t.fail()
     return
   }
@@ -54,7 +62,8 @@ test.serial("check transaction", async function(t) {
   const payment = await bob.addPayment("user", "endpoint", 5, 1000)
   bob.on("paid", function(payment) {
     console.log("paid")
-    if (payment === null) {
+    if (payment === null
+      || payment === undefined) {
       t.fail()
       return
     }
