@@ -1,4 +1,5 @@
 {
+  "coinType": "lightning",
   "db": {
     "test": true,
     "sqliteFile": "test-bob.sqlite3"

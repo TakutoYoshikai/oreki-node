@@ -26,16 +26,23 @@ exports.Oreki = class {
     this.config = config
     this.timer = null
     this.db = require("./db")(config.db)
-    this.lightning = require("./lightning")(config.lnd);
+    if (this.config.coinType === "lightning") {
+      this.lightning = require("./lightning")(config.lnd)
+    }
+    if (this.config.coinType === "ethereum") {
+      this.ethereum = require("./ethereum")(config.geth)
+    }
   }
   on(eventName, callback) {
     this.emitter.on(eventName, callback);
   }
   async init() {
-    try {
-      await this.lightning.unlock()
-    } catch(err) {
-      console.error(err)
+    if (this.config.coinType === "lightning") {
+      try {
+        await this.lightning.unlock()
+      } catch(err) {
+        console.error(err)
+      }
     }
     try {
       await this.db.initDB()
@@ -49,7 +56,11 @@ exports.Oreki = class {
     if (this.timer === null) {
       const that = this
       this.timer = setInterval(function() {
-        that.checkTransaction.apply(that)
+        if (this.config.coinType === "lightning") {
+          that.checkLightningTransaction.apply(that)
+        } else if (this.config.coinType === "ethereum") {
+          that.checkEthereumTransaction.apply(that)
+        }
       }, 60 * 1000)
     }
   }
@@ -58,8 +69,33 @@ exports.Oreki = class {
       clearInterval(this.timer)
     }
   }
-
-  async checkTransaction() {
+  async checkEthereumTransaction() {
+    try {
+      transactions = await this.ethereum.getTransactions()
+    } catch(err) {
+      console.error(err)
+      return
+    }
+    let payments = null
+    try {
+      payments = await this.db.getPayments()
+    } catch(err) {
+      console.error(err)
+      return
+    }
+    for (let transaction of transactions) {
+      const payment = payments.find(function(payment) {
+        return (payment.address === transaction.to && payment.price <= parseInt(transaction.value))
+      })
+      if (payment === undefined) {
+        return;
+      }
+      payment.paid = true
+      payment.save()
+      that.emitter.emit("paid", payment)
+    }
+  }
+  async checkLightningTransaction() {
     let that = this
     let transactions = null
     try {
@@ -91,7 +127,11 @@ exports.Oreki = class {
   async addPayment(userId, endpoint, point, price) {
     let address = null
     try {
-      address = await this.lightning.createAddress()
+      if (this.config.coinType === "lightning") {
+        address = await this.lightning.createAddress()
+      } else if (this.config.coinType === "ethereum") {
+        address = await this.ethereum.createAddress()
+      }
     } catch(err) {
       console.error(err)  
       return null

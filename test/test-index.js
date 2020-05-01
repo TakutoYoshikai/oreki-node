@@ -83,7 +83,37 @@ test.serial("check transaction", async function(t) {
 
   await sleep(5 * 60 * 1000)
   try {
-    await bob.checkTransaction()
+    await bob.checkLightningTransaction()
+  } catch(err) {
+    console.error(err)
+    t.fail()
+  }
+})
+
+test.serial("ethereum transaction check", async function(t) {
+  const oreki = new Oreki("./test/config-eth-alice.json")
+  await oreki.init()
+  oreki.ethereum.unlock(oreki.config.geth.test.fromAddress)
+  const payment = await oreki.addPayment("user", "endpoint", 100, 10)
+  oreki.on("paid", function(payment) {
+    console.log("paid")
+    if (payment === null
+      || payment === undefined) {
+      t.fail()
+      return
+    }
+    console.log("payment: ")
+    console.log(payment)
+    t.pass()
+  })
+  const receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 10)
+  if (receipt === null || receipt === undefined) {
+    t.fail()
+    return
+  }
+  await sleep(5 * 60 * 1000)
+  try {
+    await bob.checkEthereumTransaction()
   } catch(err) {
     console.error(err)
     t.fail()
