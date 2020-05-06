@@ -112,7 +112,7 @@ exports.Oreki = class {
       return
     }
     payments.forEach(function(payment) {
-      txs = transactions.filter(function(tx) {
+      const txs = transactions.filter(function(tx) {
         return (tx.dest_addresses[0] === payment.address || tx.dest_addresses[1] === payment.address)
       })
       if (txs.length === 0) {
