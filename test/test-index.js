@@ -1,5 +1,6 @@
-const test = require("ava");
-const Oreki = require("../index").Oreki;
+const test = require("ava")
+const Oreki = require("../index").Oreki
+const msToWaitBlock = 1000 * 60 * 30
 
 function sleep(ms) {
   return new Promise(function(resolve, reject) {
@@ -91,7 +92,7 @@ test.serial("check transaction", async function(t) {
     return
   }
 
-  await sleep(15 * 60 * 1000)
+  await sleep(msToWaitBlock)
   try {
     await bob.checkLightningTransaction()
   } catch(err) {
@@ -107,7 +108,7 @@ test.serial("check transaction", async function(t) {
     return
   }
 
-  await sleep(15 * 60 * 1000)
+  await sleep(msToWaitBlock)
   try {
     await bob.checkLightningTransaction()
   } catch(err) {
