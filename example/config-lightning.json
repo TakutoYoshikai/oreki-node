@@ -1,0 +1,14 @@
+{
+  "coinType": "lightning",
+  "db": {
+    "test": false,
+    "sqliteFile": "test-alice.sqlite3"
+  },
+  "lnd": {
+    "host": "localhost:10001",
+    "lndCert": "/path/to/.lnd/tls.cert",
+    "macaroon": "/path/to/admin.macaroon",
+    "password": "lnd password"
+  },
+  "password": "password of oreki server"
+}

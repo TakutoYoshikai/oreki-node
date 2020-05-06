@@ -1,0 +1,15 @@
+{
+  "coinType": "ethereum",
+  "db": {
+    "test": false,
+    "sqliteFile": "test-alice-eth.sqlite3"
+  },
+  "geth": {
+    "wsHost": "ws://localhost:8546",
+    "password": "geth password",
+    "test": {
+      "fromAddress": "address having 100 eth."
+    }
+  },
+  "password": "password of oreki server"
+}
