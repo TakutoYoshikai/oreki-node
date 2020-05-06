@@ -111,17 +111,27 @@ exports.Oreki = class {
       console.error(err)
       return
     }
-    //TODO filtering checked transaction
-    transactions.forEach(function(transaction) {
-      const payment = payments.find(function(payment) {
-        return (payment.address === transaction.dest_addresses[0] || payment.address === transaction.dest_addresses[1]) && payment.price <= parseInt(transaction.amount)
+    payments.forEach(function(payment) {
+      txs = transactions.filter(function(tx) {
+        return (tx.dest_addresses[0] === payment.address || tx.dest_addresses[1] === payment.address)
       })
-      if (payment === undefined) {
-        return;
+      if (txs.length === 0) {
+        return
       }
+      remain = payment.price
+      txs.forEach(function(tx) {
+        remain -= tx.amount
+      })
+      if (payment.remain > remain && remain > 0) {
+        payment.remain = remain
+        payment.save
+        this.emitter.emit("insufficient", payment)
+        return
+      }
+      payment.remain = 0
       payment.paid = true
       payment.save()
-      that.emitter.emit("paid", payment)
+      this.emitter.emit("paid", payment)
     })
   }
   async addPayment(userId, endpoint, point, price) {
@@ -144,6 +154,7 @@ exports.Oreki = class {
         endpoint: endpoint,
         point: point,
         price: price,
+        remain: price,
         paid: false,
       })
     } catch(err) {

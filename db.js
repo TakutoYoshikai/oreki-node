@@ -29,7 +29,8 @@ module.exports = function(config) {
       endpoint: Sequelize.STRING,
       point: Sequelize.INTEGER,
       price: Sequelize.DOUBLE,
-      paid: Sequelize.BOOLEAN
+      paid: Sequelize.BOOLEAN,
+      remain: Sequelize.DOUBLE
     },
     {
       timestamps: true

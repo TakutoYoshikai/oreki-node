@@ -57,9 +57,10 @@ test.serial("add payment", async function (t) {
 test.serial("check transaction", async function(t) {
   const alice = new Oreki("./test/config-alice.json")
   const bob = new Oreki("./test/config-bob.json")
+  let insufficientCheck = false
   await bob.init()
 
-  const payment = await bob.addPayment("user", "endpoint", 5, 1000)
+  const payment = await bob.addPayment("user", "endpoint", 5, 2000)
   bob.on("paid", function(payment) {
     console.log("paid")
     if (payment === null
@@ -69,7 +70,16 @@ test.serial("check transaction", async function(t) {
     }
     console.log("payment: ")
     console.log(payment)
-    t.pass()
+    if (insufficientCheck) {
+      t.pass()
+    }
+  })
+
+  bob.on("insufficient", function(_payment) {
+    if (payment.id === _payment.id
+      && _payment.paid === false) {
+      insufficientCheck = true   
+    }
   })
 
   let response = null
@@ -81,7 +91,23 @@ test.serial("check transaction", async function(t) {
     return
   }
 
-  await sleep(5 * 60 * 1000)
+  await sleep(15 * 60 * 1000)
+  try {
+    await bob.checkLightningTransaction()
+  } catch(err) {
+    console.error(err)
+    t.fail()
+  }
+
+  try {
+    response = await alice.lightning.sendCoins(payment.address, 1000)
+  } catch(err) {
+    console.error(err)
+    t.fail()
+    return
+  }
+
+  await sleep(15 * 60 * 1000)
   try {
     await bob.checkLightningTransaction()
   } catch(err) {
