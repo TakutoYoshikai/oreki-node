@@ -56,9 +56,9 @@ exports.Oreki = class {
     if (this.timer === null) {
       const that = this
       this.timer = setInterval(function() {
-        if (this.config.coinType === "lightning") {
+        if (that.config.coinType === "lightning") {
           that.checkLightningTransaction.apply(that)
-        } else if (this.config.coinType === "ethereum") {
+        } else if (that.config.coinType === "ethereum") {
           that.checkEthereumTransaction.apply(that)
         }
       }, 60 * 1000)
