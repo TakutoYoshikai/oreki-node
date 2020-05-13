@@ -1,6 +1,6 @@
 const test = require("ava")
 const Oreki = require("../index").Oreki
-const msToWaitBlock = 1000 * 60 * 30
+const msToWaitBlock = 1000 * 60 * 10
 
 function sleep(ms) {
   return new Promise(function(resolve, reject) {

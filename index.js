@@ -118,20 +118,20 @@ exports.Oreki = class {
       if (txs.length === 0) {
         return
       }
-      remain = payment.price
+      let remain = payment.price
       txs.forEach(function(tx) {
         remain -= tx.amount
       })
       if (payment.remain > remain && remain > 0) {
         payment.remain = remain
         payment.save
-        this.emitter.emit("insufficient", payment)
+        that.emitter.emit("insufficient", payment)
         return
       }
       payment.remain = 0
       payment.paid = true
       payment.save()
-      this.emitter.emit("paid", payment)
+      that.emitter.emit("paid", payment)
     })
   }
   async addPayment(userId, endpoint, point, price) {
