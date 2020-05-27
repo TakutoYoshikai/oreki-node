@@ -83,16 +83,33 @@ exports.Oreki = class {
       console.error(err)
       return
     }
+
+    let txs = {}
     for (let transaction of transactions) {
-      const payment = payments.find(function(payment) {
-        return (payment.address === transaction.to && payment.price <= parseInt(transaction.value))
-      })
-      if (payment === undefined) {
-        return;
+      if (txs[transaction.to] === undefined) {
+        txs[transaction.to] = []
       }
+      txs[transaction.to].push(transaction)
+    }
+    for (let payment of payments) {
+      let _transactions = txs[payment.address];
+      if (_transactions === undefined) {
+        continue
+      }
+      let remain = payment.price
+      for (let transaction of _transactions) {
+        remain -= transaction.value
+      }
+      if (remain > 0) {
+        payment.remain = remain
+        payment.save
+        this.emitter.emit("insufficient", payment)
+        return
+      }
+      payment.remain = 0
       payment.paid = true
       payment.save()
-      that.emitter.emit("paid", payment)
+      this.emitter.emit("paid", payment)
     }
   }
   async checkLightningTransaction() {
