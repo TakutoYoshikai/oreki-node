@@ -137,9 +137,11 @@ test.serial("ethereum transaction check", async function(t) {
     }
     t.pass()
   })
-  oreki.on("insufficient", function(payment) {
+  oreki.on("insufficient", function(_payment) {
     console.log("insufficient")
-    insufficientCheck = true;
+    if (payment.address === _payment.address) {
+      insufficientCheck = true;
+    }
   });
   let receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 500000)
   if (receipt === null || receipt === undefined) {
