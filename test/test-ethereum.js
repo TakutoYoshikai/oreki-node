@@ -40,3 +40,22 @@ test.serial("unlock", async function(t) {
   }
   t.pass()
 })
+
+test.serial("get balance", async function(t) {
+  const ethereum = new Ethereum(config)
+  try {
+    await ethereum.unlock(address1)
+  } catch(err) {}
+
+  let balance = null;
+  try {
+    balance = await ethereum.getBalance(address1)
+  } catch (err) {
+    t.fail(err)
+  }
+  if (balance !== 0) {
+    t.fail()
+  }
+  t.pass()
+
+});
