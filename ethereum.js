@@ -51,11 +51,20 @@ module.exports = function(config) {
     },
     unlock: async function(address) {
       try {
-        await web3.eth.personal.unlockAccount(address, config.password, 300)
+        await web3.eth.personal.unlockAccount(address, config.password, 1000)
       } catch(err) {
         console.error(err)
         throw err
       }
+    },
+    getBalance: async function(address) {
+      let balance = null;
+      try {
+        balance = await web3.eth.getBalance(address);
+      } catch(err) {
+        throw err
+      }
+      return parseInt(balance);
     }
   }
 }

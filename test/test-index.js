@@ -31,7 +31,7 @@ test.serial("add payment", async function (t) {
   const oreki = new Oreki("./test/config-test-correct.json")
   let payment = null
   try {
-    payment = await oreki.addPayment("user", "endpoint", 1, 1.5)
+    payment = await oreki.addPayment("user", "endpoint", 1, 3)
   } catch(err) {
     t.fail()
     return
@@ -46,7 +46,7 @@ test.serial("add payment", async function (t) {
     || payment.user_id !== "user" 
     || payment.endpoint !== "endpoint" 
     || payment.point !== 1 
-    || payment.price !== 1.5 
+    || payment.price !== 3 
     || payment.paid !== false) {
     t.fail()
     return
@@ -54,7 +54,7 @@ test.serial("add payment", async function (t) {
   t.pass()
 })
 
-
+/*
 test.serial("check transaction", async function(t) {
   const alice = new Oreki("./test/config-alice.json")
   const bob = new Oreki("./test/config-bob.json")
@@ -116,12 +116,14 @@ test.serial("check transaction", async function(t) {
     t.fail()
   }
 })
+*/
 
 test.serial("ethereum transaction check", async function(t) {
   const oreki = new Oreki("./test/config-eth-alice.json")
   await oreki.init()
   oreki.ethereum.unlock(oreki.config.geth.test.fromAddress)
-  const payment = await oreki.addPayment("user", "endpoint", 100, 10)
+  const payment = await oreki.addPayment("user", "endpoint", 10, 1000000)
+  let insufficientCheck = false;
   oreki.on("paid", function(payment) {
     console.log("paid")
     if (payment === null
@@ -131,16 +133,36 @@ test.serial("ethereum transaction check", async function(t) {
     }
     console.log("payment: ")
     console.log(payment)
+    if (!insufficientCheck) {
+      t.fail()
+      return
+    }
     t.pass()
   })
-  const receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 10)
+  oreki.on("insufficient", function(payment) {
+    console.log("insufficient")
+    insufficientCheck = true;
+  });
+  let receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 500000)
   if (receipt === null || receipt === undefined) {
     t.fail()
     return
   }
-  await sleep(5 * 60 * 1000)
+  await sleep(4 * 60 * 1000)
   try {
-    await bob.checkEthereumTransaction()
+    await oreki.checkEthereumTransaction()
+  } catch(err) {
+    console.error(err)
+    t.fail()
+  }
+  receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 500000)
+  if (receipt === null || receipt === undefined) {
+    t.fail()
+    return
+  }
+  await sleep(4 * 60 * 1000)
+  try {
+    await oreki.checkEthereumTransaction()
   } catch(err) {
     console.error(err)
     t.fail()

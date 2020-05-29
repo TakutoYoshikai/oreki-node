@@ -70,12 +70,6 @@ exports.Oreki = class {
     }
   }
   async checkEthereumTransaction() {
-    try {
-      transactions = await this.ethereum.getTransactions()
-    } catch(err) {
-      console.error(err)
-      return
-    }
     let payments = null
     try {
       payments = await this.db.getPayments()
@@ -83,28 +77,14 @@ exports.Oreki = class {
       console.error(err)
       return
     }
-
-    let txs = {}
-    for (let transaction of transactions) {
-      if (txs[transaction.to] === undefined) {
-        txs[transaction.to] = []
-      }
-      txs[transaction.to].push(transaction)
-    }
     for (let payment of payments) {
-      let _transactions = txs[payment.address];
-      if (_transactions === undefined) {
-        continue
-      }
-      let remain = payment.price
-      for (let transaction of _transactions) {
-        remain -= transaction.value
-      }
-      if (remain > 0) {
-        payment.remain = remain
+      await this.ethereum.unlock(payment.address)
+      const balance = await this.ethereum.getBalance(payment.address)
+      if (payment.price > balance) {
+        payment.remain = payment.price - balance
         payment.save
         this.emitter.emit("insufficient", payment)
-        return
+        continue
       }
       payment.remain = 0
       payment.paid = true
