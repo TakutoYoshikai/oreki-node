@@ -65,6 +65,31 @@ module.exports = function(config) {
         throw err
       }
       return parseInt(balance);
+    },
+    moveCoins: async function(to) {
+      for (let from of web3.eth.accounts) {
+        try {
+          await this.unlock(from);
+        } catch (err) {
+          console.error(err);
+          throw err;
+        }
+        let balance = null;
+        try {
+          balance = await this.getBalance(from);
+        } catch (err) {
+          console.error(err);
+          throw err;
+        }
+        let receipt = null;
+        try {
+          receipt = await this.sendCoins(from, to, balance - 100000000000000);
+        } catch (err) {
+          console.error(err);
+          throw err;
+        }
+        return receipt;
+      }
     }
   }
 }
