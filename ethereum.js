@@ -88,6 +88,7 @@ module.exports = function(config) {
           console.error(err);
           throw err;
         }
+        console.log(receipt);
       }
     }
   }
