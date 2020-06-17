@@ -82,6 +82,9 @@ module.exports = function(config) {
           throw err;
         }
         let receipt = null;
+        if (balance <= 100000000000000) {
+          continue;
+        }
         try {
           receipt = await this.sendCoins(from, to, balance - 100000000000000);
         } catch (err) {
