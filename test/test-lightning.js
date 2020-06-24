@@ -44,6 +44,23 @@ function executeTest() {
     t.fail()
   })
 
+  test.serial("add invoice", async function(t) {
+    let request
+    try {
+      request = await lightning.addInvoice(1000)
+    } catch(err) {
+      console.error(err)
+      t.fail()
+      return
+    }
+    request = request.pay_req
+    if ((typeof request === "string" || request instanceof String) && request.length > 0) {
+      t.pass()
+      return
+    }
+    t.fail()
+  })
+
   test.serial("create new address", async function(t) {
     let address
     try {
