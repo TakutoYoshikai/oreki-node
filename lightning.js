@@ -76,7 +76,7 @@ module.exports = function(config) {
             reject(err)
             return
           }
-          resolve(response)
+          resolve(response.payment_request)
         })
       })
     },
