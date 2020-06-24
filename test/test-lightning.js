@@ -53,7 +53,7 @@ function executeTest() {
       t.fail()
       return
     }
-    request = request.pay_req
+    request = request.payment_request
     if ((typeof request === "string" || request instanceof String) && request.length > 0) {
       t.pass()
       return

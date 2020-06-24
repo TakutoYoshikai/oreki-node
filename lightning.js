@@ -90,7 +90,7 @@ module.exports = function(config) {
           }
           resolve(response.invoices.filter(function(invoice) {
             return invoice.settled
-          })
+          }))
         })
       })
     },
