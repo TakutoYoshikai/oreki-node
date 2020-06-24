@@ -80,6 +80,18 @@ module.exports = function(config) {
         })
       })
     },
+    listInvoices: function() {
+      return new Promise(function(resolve, reject) {
+        const request = {}
+        ln.listInvoices(request, function(err, response) {
+          if (err !== null) {
+            reject(err)
+            return
+          }
+          resolve(response)
+        })
+      })
+    },
     sendPayment: function(req) {
       return new Promise(function(resolve, reject) {
         const request = {
