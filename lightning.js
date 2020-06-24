@@ -88,7 +88,9 @@ module.exports = function(config) {
             reject(err)
             return
           }
-          resolve(response)
+          resolve(response.invoices.filter(function(invoice) {
+            return invoice.settled
+          })
         })
       })
     },

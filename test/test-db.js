@@ -9,7 +9,7 @@ test.serial("create payment and get payment", async function(t) {
   let payment = null
   try {
     payment = await db.createPayment({
-      address: "address",
+      payee: "payee",
       user_id: "user_id",
       endpoint: "endpoint",
       point: 5,
@@ -20,22 +20,12 @@ test.serial("create payment and get payment", async function(t) {
     t.fail(err)
     return
   }
-  if (!(payment.address === "address" 
+  if (!(payment.payee === "payee" 
     && payment.user_id === "user_id" 
     && payment.endpoint === "endpoint" 
     && payment.point === 5 
     && payment.price === 3 
     && payment.paid === false)) {
-    t.fail()
-    return
-  }
-  try {
-    payment = await db.getPaymentByAddress("address")
-  } catch(err) {
-    t.fail(err)
-    return
-  }
-  if (payment.address !== "address") {
     t.fail()
     return
   }
@@ -47,7 +37,7 @@ test.serial("create payment and get payment", async function(t) {
     t.fail(err)
     return
   }
-  if (!(payments.length === 1 && payments[0].address === "address")) {
+  if (!(payments.length === 1 && payments[0].payee === "payee")) {
     t.fail()
     return
   }

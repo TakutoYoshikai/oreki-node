@@ -78,8 +78,8 @@ exports.Oreki = class {
       return
     }
     for (let payment of payments) {
-      await this.ethereum.unlock(payment.address)
-      const balance = await this.ethereum.getBalance(payment.address)
+      await this.ethereum.unlock(payment.payee)
+      const balance = await this.ethereum.getBalance(payment.payee)
       if (payment.price > balance) {
         payment.remain = payment.price - balance
         payment.save
@@ -94,9 +94,9 @@ exports.Oreki = class {
   }
   async checkLightningTransaction() {
     let that = this
-    let transactions = null
+    let invoices = null
     try {
-      transactions = await this.lightning.getTransactions()
+      invoices = await this.lightning.listInvoices()
     } catch(err) {
       console.error(err)
       return
@@ -109,20 +109,10 @@ exports.Oreki = class {
       return
     }
     payments.forEach(function(payment) {
-      const txs = transactions.filter(function(tx) {
-        return (tx.dest_addresses[0] === payment.address || tx.dest_addresses[1] === payment.address)
+      const _invoices = invoices.filter(function(invoice) {
+        return invoice.payment_request === payment.payee
       })
-      if (txs.length === 0) {
-        return
-      }
-      let remain = payment.price
-      txs.forEach(function(tx) {
-        remain -= tx.amount
-      })
-      if (payment.remain > remain && remain > 0) {
-        payment.remain = remain
-        payment.save
-        that.emitter.emit("insufficient", payment)
+      if (_invoices.length === 0) {
         return
       }
       payment.remain = 0
@@ -132,12 +122,12 @@ exports.Oreki = class {
     })
   }
   async addPayment(userId, endpoint, point, price) {
-    let address = null
+    let payee = null
     try {
       if (this.config.coinType === "lightning") {
-        address = await this.lightning.createAddress()
+        payee = await this.lightning.addInvoice(price)
       } else if (this.config.coinType === "ethereum") {
-        address = await this.ethereum.createAddress()
+        payee = await this.ethereum.createAddress()
       }
     } catch(err) {
       console.error(err)  
@@ -146,7 +136,7 @@ exports.Oreki = class {
     let payment = null
     try {
       payment = await this.db.createPayment({
-        address: address,
+        payee: payee,
         user_id: userId,
         endpoint: endpoint,
         point: point,

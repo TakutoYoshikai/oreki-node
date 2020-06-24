@@ -41,8 +41,8 @@ test.serial("add payment", async function (t) {
     t.fail()
     return
   }
-  if (payment.address === null 
-    || payment.address === undefined
+  if (payment.payee === null 
+    || payment.payee === undefined
     || payment.user_id !== "user" 
     || payment.endpoint !== "endpoint" 
     || payment.point !== 1 
@@ -84,7 +84,7 @@ test.serial("check transaction", async function(t) {
 
   let response = null
   try {
-    response = await alice.lightning.sendCoins(payment.address, 1000)
+    response = await alice.lightning.sendCoins(payment.payee, 1000)
   } catch(err) {
     console.error(err)
     t.fail()
@@ -100,7 +100,7 @@ test.serial("check transaction", async function(t) {
   }
 
   try {
-    response = await alice.lightning.sendCoins(payment.address, 1000)
+    response = await alice.lightning.sendCoins(payment.payee, 1000)
   } catch(err) {
     console.error(err)
     t.fail()
@@ -139,11 +139,11 @@ test.serial("ethereum transaction check", async function(t) {
   })
   oreki.on("insufficient", function(_payment) {
     console.log("insufficient")
-    if (payment.address === _payment.address) {
+    if (payment.payee === _payment.payee) {
       insufficientCheck = true;
     }
   });
-  let receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 500000)
+  let receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.payee, 500000)
   if (receipt === null || receipt === undefined) {
     t.fail()
     return
@@ -155,7 +155,7 @@ test.serial("ethereum transaction check", async function(t) {
     console.error(err)
     t.fail()
   }
-  receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.address, 500000)
+  receipt = await oreki.ethereum.sendCoins(oreki.config.geth.test.fromAddress, payment.payee, 500000)
   if (receipt === null || receipt === undefined) {
     t.fail()
     return

@@ -24,7 +24,7 @@ module.exports = function(config) {
   const Payment = sequelize.define(
     "payment",
     {
-      address: Sequelize.STRING,
+      payee: Sequelize.STRING,
       user_id: Sequelize.STRING,
       endpoint: Sequelize.STRING,
       point: Sequelize.INTEGER,
@@ -47,13 +47,6 @@ module.exports = function(config) {
       return Payment.findAll({
         where: {
           paid: false
-        }
-      })
-    },
-    getPaymentByAddress: function(address) {
-      return Payment.findOne({
-        where: {
-          address: address
         }
       })
     },
