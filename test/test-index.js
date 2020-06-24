@@ -54,6 +54,7 @@ test.serial("add payment", async function (t) {
   t.pass()
 })
 
+/*
 test.serial("check transaction", async function(t) {
   const alice = new Oreki("./test/config-alice.json")
   const bob = new Oreki("./test/config-bob.json")
@@ -115,6 +116,8 @@ test.serial("check transaction", async function(t) {
     t.fail()
   }
 })
+
+*/
 
 test.serial("ethereum transaction check", async function(t) {
   const oreki = new Oreki("./test/config-eth-alice.json")
