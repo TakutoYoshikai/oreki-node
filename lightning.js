@@ -66,6 +66,34 @@ module.exports = function(config) {
         });
       })
     },
+    addInvoice: function(value) {
+      return new Promise(function(resolve, reject) {
+        const request = {
+          value: value
+        }
+        ln.addInvoice(request, function(err, response) {
+          if (err !== null) {
+            reject(err)
+            return
+          }
+          resolve(response)
+        })
+      })
+    },
+    sendPayment: function(req) {
+      return new Promise(function(resolve, reject) {
+        const request = {
+          payment_request: req
+        }
+        ln.sendPayment(request, function(err, response) {
+          if (err !== null) {
+            reject(err)
+            return
+          }
+          resolve(response)
+        });
+      });
+    },
     sendCoins: function(to, amount) {
       return new Promise(function(resolve, reject) {
         const request = {
