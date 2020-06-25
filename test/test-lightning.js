@@ -44,6 +44,22 @@ function executeTest() {
     t.fail()
   })
 
+  test.serial("list invoice", async function(t) {
+    let invoices
+    try {
+      invoices = await lightning.listInvoices()
+    } catch(err) {
+      console.error(err)
+      t.fail()
+      return
+    }
+    if (!Array.isArray(invoices)) {
+      t.fail()
+      return
+    }
+    t.pass()
+  })
+
   test.serial("add invoice", async function(t) {
     let request
     try {
