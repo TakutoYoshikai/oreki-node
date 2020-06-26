@@ -1,6 +1,6 @@
 {
   "name": "oreki-node",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This is a package for using oreki framework.",
   "main": "index.js",
   "scripts": {
